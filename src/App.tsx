@@ -6,20 +6,40 @@ function App() {
   const targetRef = useRef<HTMLDivElement>(null);
 
   const [list, setList] = useState<Array<string> | []>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // fetching
   const onFetch = useCallback(() => {
-    setList((prevList) => [...prevList, ...database]);
+    setIsLoading(true);
+
+    setTimeout(() => {
+      setList((prevList) => [...prevList, ...database]);
+      setIsLoading(false);
+    }, 1000);
   }, []);
 
+  const handleObserver = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      if (isLoading) {
+        return;
+      }
+
+      if (entries[0].isIntersecting) {
+        onFetch();
+      }
+    },
+    [isLoading, onFetch]
+  );
+
   useEffect(() => {
-    const observer = new IntersectionObserver(onFetch, { threshold: 1 });
+    const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
 
     if (!!targetRef.current) {
       observer.observe(targetRef.current);
     }
 
     return () => observer && observer.disconnect();
-  }, [onFetch]);
+  }, [handleObserver]);
 
   return (
     <ul className="list-container">
