@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import "./App.css";
 import database from "./libs/db";
+import { FadeLoader } from "react-spinners";
 
 function App() {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -48,6 +49,7 @@ function App() {
           {element}
         </li>
       ))}
+      {isLoading && <FadeLoader />}
       <div ref={targetRef} />
     </ul>
   );
