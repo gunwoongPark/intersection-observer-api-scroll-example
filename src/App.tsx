@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import "./App.css";
 import database from "./libs/db";
 import { FadeLoader } from "react-spinners";
+import useIntersectionObserver from "./hooks/useIntersectionObserver";
 
 function App() {
   const targetRef = useRef<HTMLDivElement>(null);
@@ -32,15 +33,7 @@ function App() {
     [isLoading, onFetch]
   );
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, { threshold: 1 });
-
-    if (!!targetRef.current) {
-      observer.observe(targetRef.current);
-    }
-
-    return () => observer && observer.disconnect();
-  }, [handleObserver]);
+  useIntersectionObserver({ callback: handleObserver, ref: targetRef });
 
   return (
     <ul className="list-container">

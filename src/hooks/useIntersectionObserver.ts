@@ -9,10 +9,13 @@ const useIntersectionObserver = ({
 }) => {
   useEffect(() => {
     const observer = new IntersectionObserver(callback, { threshold: 1 });
+
     if (!!ref.current) {
       observer.observe(ref.current);
     }
-  }, [callback]);
+
+    return () => observer && observer.disconnect();
+  }, [callback, ref]);
 };
 
 export default useIntersectionObserver;
