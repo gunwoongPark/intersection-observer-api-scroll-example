@@ -1,5 +1,5 @@
 {
-  "name": "intersection-observer-api-example",
+  "name": "intersection-observer-api-scroll-example",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
